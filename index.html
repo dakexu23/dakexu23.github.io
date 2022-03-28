@@ -201,7 +201,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-03-28 05:01:56 / 修改时间：17:34:32" itemprop="dateCreated datePublished" datetime="2022-03-28T05:01:56+08:00">2022-03-28</time>
+      <time title="创建时间：2022-03-28 05:01:56 / 修改时间：17:50:43" itemprop="dateCreated datePublished" datetime="2022-03-28T05:01:56+08:00">2022-03-28</time>
     </span>
 
   
@@ -216,45 +216,14 @@
     <div class="post-body" itemprop="articleBody">
           <h4 id="Kubernetes是什么"><a href="#Kubernetes是什么" class="headerlink" title="Kubernetes是什么"></a>Kubernetes是什么</h4><p>Kubernetes 是一个可移植的，可扩展的开源平台，用于管理容器化的工作负载和服务，方便了声明式配置和自动化。它拥有一个庞大且快速增长的生态系统。Kubernetes 的服务，支持和工具广泛可用。</p>
 <p>Kubernetes能做什么？</p>
-<ul>
-<li>敏捷的应用创建和部署，与使用VM相比</li>
-<li>关注开发和运维分离；在构建&#x2F;发布时创赢应用程序镜像，从而将应用程序与基础架构分离。</li>
-<li>持续开发、集成和部署</li>
-<li>跨开发、测试、生产的环境一致性</li>
-<li>跨云的可移植性</li>
-<li>资源隔离</li>
-<li>资源高效和高密度应用</li>
-<li>可观测性</li>
-<li>散耦合、分布式、弹性、解放的微服务（服务治理却由istio来完成）</li>
-</ul>
-<h4 id="Kubernetes组件"><a href="#Kubernetes组件" class="headerlink" title="Kubernetes组件"></a>Kubernetes组件</h4><p>Kubernetes集群运行所需要的组件</p>
-<p><img src="/images/comonents-of-k8s.png"></p>
-<p>Kubernetes集群的工作原理</p>
-<p><img src="/images/full-kubernetes-model-architecture.png"></p>
-<h5 id="控制平面"><a href="#控制平面" class="headerlink" title="控制平面"></a>控制平面</h5><ol>
-<li>kube-apiserver：提供HTTP RESTful API接口的主要服务，是Kubernetes里所有资源进行增删改查等操作的唯一入口，也是集群控制的进程。</li>
-<li>etcd：kubernetes所有集群数据的数据库</li>
-<li>kube-scheduler：负责资源调度的进程。</li>
-<li>kube-controller-manager：所有资源对象的自动化控制中心，可以理解为资源对象的”大总管“</li>
-</ol>
-<h5 id="Node组件"><a href="#Node组件" class="headerlink" title="Node组件"></a>Node组件</h5><ol>
-<li>kubelet：负责对Pod对应容器的创建、启动等任务，与master协作，实现集群管理的基本功能。</li>
-<li>kube-proxy：是集群中每个节点上运行的网络代理，实现kubernetes服务（Service）概念的一部分。kube-proxy维护节点上的网络规则，这些规则允许从集群内部或者外部的网络会话与Pod进行网络通信。</li>
-</ol>
-<h5 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h5><ol>
-<li>DNS：集群 DNS 是一个 DNS 服务器，和环境中的其他 DNS 服务器一起工作，它为 Kubernetes 服务提供 DNS 记录。Kubernetes 启动的容器自动将此 DNS 服务器包含在其 DNS 搜索列表中。</li>
-<li>Dashboard：是 Kubernetes 集群的通用的、基于 Web 的用户界面。 它使用户可以管理集群中运行的应用程序以及集群本身并进行故障排除。</li>
-<li>容器资源监控：将关于容器的一些常见的时间序列度量值保存到一个集中的数据库中，并提供用于浏览这些数据的界面。</li>
-<li>集群日志：机制负责将容器的日志数据 保存到一个集中的日志存储中，该存储能够提供搜索和浏览接口。</li>
-</ol>
-<h5 id="容器运行时"><a href="#容器运行时" class="headerlink" title="容器运行时"></a>容器运行时</h5><p>Kubernetes 支持容器运行时，例如 Docker、 containerd、CRI-O 以及 Kubernetes CRI (容器运行环境接口) 的其他任何实现。</p>
-<h4 id="Kubernetes项目的全局架构"><a href="#Kubernetes项目的全局架构" class="headerlink" title="Kubernetes项目的全局架构"></a>Kubernetes项目的全局架构</h4><p><img src="/images/full-k8s-arch.png"></p>
-<ol>
-<li>K8S中kubelet组件负责与容器运行时进行交互，但并不关心k8s具体是用什么容器运行时；</li>
-<li>具体的容器运行时则通过OCI这个容器运行时规范同底层的Linux操作系统进行交互；</li>
-<li>kubelet组件调用网络插件和存储插件分别容器配置网络和持久化存储；</li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/27/01kubernetesarch/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -310,7 +279,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-03-28 03:21:23 / 修改时间：13:06:33" itemprop="dateCreated datePublished" datetime="2022-03-28T03:21:23+08:00">2022-03-28</time>
+      <time title="创建时间：2022-03-28 03:21:23 / 修改时间：17:51:04" itemprop="dateCreated datePublished" datetime="2022-03-28T03:21:23+08:00">2022-03-28</time>
     </span>
 
   
@@ -323,7 +292,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="一、Kubernetes原理及架构设计"><a href="#一、Kubernetes原理及架构设计" class="headerlink" title="一、Kubernetes原理及架构设计"></a>一、Kubernetes原理及架构设计</h4><h4 id="二、在Ubuntu-20-04部署Kubernetes"><a href="#二、在Ubuntu-20-04部署Kubernetes" class="headerlink" title="二、在Ubuntu 20.04部署Kubernetes"></a>二、在Ubuntu 20.04部署Kubernetes</h4><h4 id="三、使用DigitalOcean开箱即用Kubernetes环境"><a href="#三、使用DigitalOcean开箱即用Kubernetes环境" class="headerlink" title="三、使用DigitalOcean开箱即用Kubernetes环境"></a>三、使用DigitalOcean开箱即用Kubernetes环境</h4><h4 id="四、Kubernetes编排原理之Pod篇"><a href="#四、Kubernetes编排原理之Pod篇" class="headerlink" title="四、Kubernetes编排原理之Pod篇"></a>四、Kubernetes编排原理之Pod篇</h4><h4 id="五、Kubernetes编排原理之StatefulSet"><a href="#五、Kubernetes编排原理之StatefulSet" class="headerlink" title="五、Kubernetes编排原理之StatefulSet"></a>五、Kubernetes编排原理之StatefulSet</h4><h4 id="六、Kubernetes编排原理之DaemonSet"><a href="#六、Kubernetes编排原理之DaemonSet" class="headerlink" title="六、Kubernetes编排原理之DaemonSet"></a>六、Kubernetes编排原理之DaemonSet</h4><h4 id="七、Kubernetes编排原理之Job与CronJob"><a href="#七、Kubernetes编排原理之Job与CronJob" class="headerlink" title="七、Kubernetes编排原理之Job与CronJob"></a>七、Kubernetes编排原理之Job与CronJob</h4><h4 id="八、声明式API与Kubernetes编程范式"><a href="#八、声明式API与Kubernetes编程范式" class="headerlink" title="八、声明式API与Kubernetes编程范式"></a>八、声明式API与Kubernetes编程范式</h4><h4 id="九、Kubernetes存储原理"><a href="#九、Kubernetes存储原理" class="headerlink" title="九、Kubernetes存储原理"></a>九、Kubernetes存储原理</h4><h4 id="十、Kubernetes网络原理"><a href="#十、Kubernetes网络原理" class="headerlink" title="十、Kubernetes网络原理"></a>十、Kubernetes网络原理</h4><h4 id="十一、Kubernetes容器运行时"><a href="#十一、Kubernetes容器运行时" class="headerlink" title="十一、Kubernetes容器运行时"></a>十一、Kubernetes容器运行时</h4><h4 id="十二、Kubernetes运维管理之资源管理"><a href="#十二、Kubernetes运维管理之资源管理" class="headerlink" title="十二、Kubernetes运维管理之资源管理"></a>十二、Kubernetes运维管理之资源管理</h4><h4 id="十三、Kubernetes资源紧缺时的Pod驱逐机制"><a href="#十三、Kubernetes资源紧缺时的Pod驱逐机制" class="headerlink" title="十三、Kubernetes资源紧缺时的Pod驱逐机制"></a>十三、Kubernetes资源紧缺时的Pod驱逐机制</h4><h4 id="十四、Kubernetes之集群监控"><a href="#十四、Kubernetes之集群监控" class="headerlink" title="十四、Kubernetes之集群监控"></a>十四、Kubernetes之集群监控</h4><h4 id="十五、Kubernetes之日志管理"><a href="#十五、Kubernetes之日志管理" class="headerlink" title="十五、Kubernetes之日志管理"></a>十五、Kubernetes之日志管理</h4><h4 id="十六、Kubernetes之包管理工具Helm使用"><a href="#十六、Kubernetes之包管理工具Helm使用" class="headerlink" title="十六、Kubernetes之包管理工具Helm使用"></a>十六、Kubernetes之包管理工具Helm使用</h4><h4 id="十七、Kubernetes与Istio的集成"><a href="#十七、Kubernetes与Istio的集成" class="headerlink" title="十七、Kubernetes与Istio的集成"></a>十七、Kubernetes与Istio的集成</h4><h4 id="十八、使用Jenkins-Gitlab-Kubernetes构建自动运维系统"><a href="#十八、使用Jenkins-Gitlab-Kubernetes构建自动运维系统" class="headerlink" title="十八、使用Jenkins+Gitlab+Kubernetes构建自动运维系统"></a>十八、使用Jenkins+Gitlab+Kubernetes构建自动运维系统</h4>
+          <h4 id="一、Kubernetes原理及架构设计"><a href="#一、Kubernetes原理及架构设计" class="headerlink" title="一、Kubernetes原理及架构设计"></a>一、Kubernetes原理及架构设计</h4><h4 id="二、在Ubuntu-20-04部署Kubernetes"><a href="#二、在Ubuntu-20-04部署Kubernetes" class="headerlink" title="二、在Ubuntu 20.04部署Kubernetes"></a>二、在Ubuntu 20.04部署Kubernetes</h4><h4 id="三、使用DigitalOcean开箱即用Kubernetes环境"><a href="#三、使用DigitalOcean开箱即用Kubernetes环境" class="headerlink" title="三、使用DigitalOcean开箱即用Kubernetes环境"></a>三、使用DigitalOcean开箱即用Kubernetes环境</h4><h4 id="四、Kubernetes编排原理之Pod篇"><a href="#四、Kubernetes编排原理之Pod篇" class="headerlink" title="四、Kubernetes编排原理之Pod篇"></a>四、Kubernetes编排原理之Pod篇</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/27/mynewwriteplan/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -422,31 +399,15 @@
 
 <h3 id="在容器中安装配置hexo"><a href="#在容器中安装配置hexo" class="headerlink" title="在容器中安装配置hexo"></a>在容器中安装配置hexo</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it hexoblog /bin/bash</span><br><span class="line"><span class="built_in">cd</span> /usr/blog</span><br><span class="line">npm install hexo-cli -g</span><br><span class="line">hexo init blog.ainvestornotes.com</span><br><span class="line"><span class="built_in">cd</span> blog.ainvestornotes.com</span><br></pre></td></tr></table></figure>
 
-<h3 id="安装配置Next主题"><a href="#安装配置Next主题" class="headerlink" title="安装配置Next主题"></a>安装配置Next主题</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd hexo-site</span><br><span class="line">git clone https:<span class="regexp">//gi</span>thub.com<span class="regexp">/next-theme/</span>hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后在站点配置文件中启用next主题（编辑blog.ainvestornotes.com/_config.yml）</span></span><br><span class="line">theme: <span class="keyword">next</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line"># 生成博客静态文件</span><br><span class="line">hexo <span class="keyword">generate</span> </span><br></pre></td></tr></table></figure>
-
-<h3 id="构建博客镜像"><a href="#构建博客镜像" class="headerlink" title="构建博客镜像"></a>构建博客镜像</h3><p>编辑Dockerfile文件</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="regexp">/Users/</span>dongqi<span class="regexp">/techwork/</span>blog<span class="regexp">/blog.ainvestornotes.com/</span><span class="keyword">public</span></span><br></pre></td></tr></table></figure>
-
-<p>Dockerfile文件的编写</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx</span><br><span class="line"><span class="keyword">COPY</span> <span class="keyword">public</span> <span class="regexp">/usr/</span>share<span class="regexp">/nginx/</span>html</span><br></pre></td></tr></table></figure>
-
-<h3 id="将代码提交至github"><a href="#将代码提交至github" class="headerlink" title="将代码提交至github"></a>将代码提交至github</h3><h3 id="配置阿里云镜像仓库根据代码变化自动构建最新镜像"><a href="#配置阿里云镜像仓库根据代码变化自动构建最新镜像" class="headerlink" title="配置阿里云镜像仓库根据代码变化自动构建最新镜像"></a>配置阿里云镜像仓库根据代码变化自动构建最新镜像</h3><p>在阿里云上新建镜像仓库，并配置github授权（该步骤参考阿里云的镜像仓库配置说明）</p>
-<p><img src="/images/aliyunregisty.png"></p>
-<h3 id="在目标主机启动镜像并发布服务"><a href="#在目标主机启动镜像并发布服务" class="headerlink" title="在目标主机启动镜像并发布服务"></a>在目标主机启动镜像并发布服务</h3><p>在目标主机编写docker-compose文件</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="regexp">/data/</span>blog</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">version:</span> <span class="string">&quot;3.3&quot;</span>  <span class="meta"># optional since v1.27.0</span></span><br><span class="line"><span class="symbol">services:</span></span><br><span class="line"><span class="symbol">  web:</span></span><br><span class="line"><span class="symbol">    hostname:</span> blog</span><br><span class="line"><span class="symbol">    ports:</span></span><br><span class="line">      - <span class="string">&quot;8100:80&quot;</span></span><br><span class="line"><span class="symbol">    image:</span> registry.cn-shanghai.aliyuncs.com<span class="keyword">/dakeblog/</span>techblog:latest</span><br></pre></td></tr></table></figure>
-
-<p>使用docker-compose命令启动容器</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker-compose up -d</span></span><br></pre></td></tr></table></figure>
-
-<p>验证服务</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">docker ps</span> </span><br></pre></td></tr></table></figure>
-
-<p>使用nginx做前端代理、配置证书(略)</p>
-
+<h3 id="安装配置Next主题"><a href="#安装配置Next主题" class="headerlink" title="安装配置Next主题"></a>安装配置Next主题</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/26/%E4%BD%BF%E7%94%A8docker%E6%9E%84%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

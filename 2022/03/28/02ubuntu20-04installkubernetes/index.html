@@ -21,16 +21,16 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.ainvestornotes.com","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="一、环境准备123sudo apt updatesudo apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificatessudo apt -y upgrade &amp;&amp; sudo systemctl reboot  二、网络规划   POD网络CIDR网段">
+    <meta name="description" content="现在从事的工作，符合你最初的设想吗？一份伟大的工作能让你的生活充满兴奋，富有意义，而不适合的工作则会让人的生命之水趋于枯竭。 –杰克.韦尔奇  一、环境准备123sudo apt updatesudo apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificatess">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Ubuntu 20.04部署Kubernetes">
 <meta property="og:url" content="https://blog.ainvestornotes.com/2022/03/28/02ubuntu20-04installkubernetes/index.html">
 <meta property="og:site_name" content="大可的一亩三分地">
-<meta property="og:description" content="一、环境准备123sudo apt updatesudo apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificatessudo apt -y upgrade &amp;&amp; sudo systemctl reboot  二、网络规划   POD网络CIDR网段">
+<meta property="og:description" content="现在从事的工作，符合你最初的设想吗？一份伟大的工作能让你的生活充满兴奋，富有意义，而不适合的工作则会让人的生命之水趋于枯竭。 –杰克.韦尔奇  一、环境准备123sudo apt updatesudo apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificatess">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.ainvestornotes.com/images/k8s-dashboard.png">
 <meta property="article:published_time" content="2022-03-28T01:55:47.000Z">
-<meta property="article:modified_time" content="2022-04-01T05:20:30.071Z">
+<meta property="article:modified_time" content="2022-04-01T08:42:11.461Z">
 <meta property="article:author" content="大可">
 <meta property="article:tag" content="kubernetes">
 <meta name="twitter:card" content="summary">
@@ -132,7 +132,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -216,7 +216,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-01 13:20:30" itemprop="dateModified" datetime="2022-04-01T13:20:30+08:00">2022-04-01</time>
+      <time title="修改时间：2022-04-01 16:42:11" itemprop="dateModified" datetime="2022-04-01T16:42:11+08:00">2022-04-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -242,7 +242,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates</span><br><span class="line">sudo apt -y upgrade &amp;&amp; sudo systemctl reboot</span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p>现在从事的工作，符合你最初的设想吗？<br>一份伟大的工作能让你的生活充满兴奋，富有意义，而不适合的工作则会让人的生命之水趋于枯竭。 –杰克.韦尔奇</p>
+</blockquote>
+<h4 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates</span><br><span class="line">sudo apt -y upgrade &amp;&amp; sudo systemctl reboot</span><br></pre></td></tr></table></figure>
 
 <h4 id="二、网络规划"><a href="#二、网络规划" class="headerlink" title="二、网络规划"></a>二、网络规划</h4><table>
 <thead>
@@ -364,6 +367,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2022/03/31/kubernetespod/" rel="next" title="Kubernetes之Pod详解">
+                  Kubernetes之Pod详解 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

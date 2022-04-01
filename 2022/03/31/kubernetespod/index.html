@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.ainvestornotes.com","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Pod是什么？Kubernetes中所处理的，还是宿主机操作系统上的Linux容器的Namespace和Cgroups，并不存在Pod的便捷或者隔离环境。 Pod又是怎么创建出来的? Pod在K8S中，Pod的实现需要一个中间容器，这个容器叫做Infa容器。在这个容器中，Infa永远是第一个被创建出来的，用户定义的其他容器则通过Join Network Namespace的方式与Infra容器关联">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes之Pod详解">
+<meta property="og:url" content="https://blog.ainvestornotes.com/2022/03/31/kubernetespod/index.html">
+<meta property="og:site_name" content="大可的一亩三分地">
+<meta property="og:description" content="Pod是什么？Kubernetes中所处理的，还是宿主机操作系统上的Linux容器的Namespace和Cgroups，并不存在Pod的便捷或者隔离环境。 Pod又是怎么创建出来的? Pod在K8S中，Pod的实现需要一个中间容器，这个容器叫做Infa容器。在这个容器中，Infa永远是第一个被创建出来的，用户定义的其他容器则通过Join Network Namespace的方式与Infra容器关联">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.ainvestornotes.com/2022-04-01-kubernetespod/pod-arch.png">
+<meta property="article:published_time" content="2022-03-31T21:24:46.000Z">
+<meta property="article:modified_time" content="2022-04-01T09:52:42.224Z">
+<meta property="article:author" content="大可">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.ainvestornotes.com/2022-04-01-kubernetespod/pod-arch.png">
+
+
+<link rel="canonical" href="https://blog.ainvestornotes.com/2022/03/31/kubernetespod/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.ainvestornotes.com/2022/03/31/kubernetespod/","path":"2022/03/31/kubernetespod/","title":"Kubernetes之Pod详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Kubernetes之Pod详解 | 大可的一亩三分地</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">大可的一亩三分地</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section">关于</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section">分类</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Pod是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Pod"><span class="nav-number">2.</span> <span class="nav-text">使用Pod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod%E6%80%8E%E4%B9%88%E6%A0%B7%E7%AE%A1%E7%90%86%E5%A4%9A%E4%B8%AA%E5%AE%B9%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">Pod怎么样管理多个容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod%E5%92%8C%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">4.</span> <span class="nav-text">Pod和控制器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod%E6%A8%A1%E6%9D%BF"><span class="nav-number">5.</span> <span class="nav-text">Pod模板</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">大可</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.ainvestornotes.com/2022/03/31/kubernetespod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="大可">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大可的一亩三分地">
+      <meta itemprop="description" content="">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Kubernetes之Pod详解 | 大可的一亩三分地">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kubernetes之Pod详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-01 05:24:46 / 修改时间：17:52:42" itemprop="dateCreated datePublished" datetime="2022-04-01T05:24:46+08:00">2022-04-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="Pod是什么？"><a href="#Pod是什么？" class="headerlink" title="Pod是什么？"></a>Pod是什么？</h4><p>Kubernetes中所处理的，还是宿主机操作系统上的Linux容器的Namespace和Cgroups，并不存在Pod的便捷或者隔离环境。</p>
+<p>Pod又是怎么创建出来的?</p>
+<p>Pod在K8S中，Pod的实现需要一个中间容器，这个容器叫做Infa容器。在这个容器中，Infa永远是第一个被创建出来的，用户定义的其他容器则通过Join Network Namespace的方式与Infra容器关联在一起。</p>
+<p><strong>Pod 的共享上下文包括一组 Linux 名字空间、控制组（cgroup）和可能一些其他的隔离 方面，即用来隔离 Docker 容器的技术。 在 Pod 的上下文中，每个独立的应用可能会进一步实施隔离。</strong></p>
+<p><strong>就 Docker 概念的术语而言，Pod 类似于共享名字空间和文件系统卷的一组 Docker 容器。</strong></p>
+<blockquote>
+<p>Pod的本质：Pod实际上是在扮演传统基础设施里”虚拟机“的角色，容器则是在这个虚拟机里运行的用户程序。</p>
+</blockquote>
+<span id="more"></span>
+
+<h4 id="使用Pod"><a href="#使用Pod" class="headerlink" title="使用Pod"></a>使用Pod</h4><p>Kubernetes 集群中的 Pod 主要有两种用法：</p>
+<ul>
+<li><p>运行单个容器的 Pod。”每个 Pod 一个容器”模型是最常见的 Kubernetes 用例； 在这种情况下，可以将 Pod 看作单个容器的包装器，并且 Kubernetes 直接管理 Pod，而不是容器。</p>
+</li>
+<li><p>运行多个协同工作的容器的 Pod。 Pod 可能封装由多个紧密耦合且需要共享资源的共处容器组成的应用程序。 这些位于同一位置的容器可能形成单个内聚的服务单元 —— 一个容器将文件从共享卷提供给公众， 而另一个单独的“边车”（sidecar）容器则刷新或更新这些文件。 Pod 将这些容器和存储资源打包为一个可管理的实体。</p>
+</li>
+</ul>
+<p>每个 Pod 都旨在运行给定应用程序的单个实例。如果希望横向扩展应用程序（例如，运行多个实例 以提供更多的资源），则应该使用多个 Pod，每个实例使用一个 Pod。 在 Kubernetes 中，这通常被称为 副本（Replication）。 通常使用一种<strong>工作负载资源</strong>及其<strong>控制器</strong>来创建和管理一组 Pod 副本。</p>
+<h4 id="Pod怎么样管理多个容器"><a href="#Pod怎么样管理多个容器" class="headerlink" title="Pod怎么样管理多个容器"></a>Pod怎么样管理多个容器</h4><p>Pod 被设计成支持形成内聚服务单元的多个协作过程（形式为容器）。 Pod 中的容器被自动安排到集群中的同一物理机或虚拟机上，并可以一起进行调度。 容器之间可以共享资源和依赖、彼此通信、协调何时以及何种方式终止自身。</p>
+<p>例如，你可能有一个容器，为共享卷中的文件提供 Web 服务器支持，以及一个单独的 “sidecar（挂斗）”容器负责从远端更新这些文件，如下图所示：</p>
+<p><img src="/./2022-04-01-kubernetespod/pod-arch.png"></p>
+<p>有些 Pod 具有 <strong>Init 容器</strong> 和 <strong>应用容器</strong>。 Init 容器会在启动应用容器之前运行并完成。</p>
+<p>Pod 天生地为其成员容器提供了两种共享资源：<strong>网络</strong>和 <strong>存储</strong>。</p>
+<h4 id="Pod和控制器"><a href="#Pod和控制器" class="headerlink" title="Pod和控制器"></a>Pod和控制器</h4><p>下面是一些管理一个或者多个Pod的工作负载资源的示例：</p>
+<ul>
+<li>Deployment</li>
+<li>StatefulSet</li>
+<li>DaemonSet</li>
+</ul>
+<h4 id="Pod模板"><a href="#Pod模板" class="headerlink" title="Pod模板"></a>Pod模板</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Job</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">hello</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="comment"># 这里是 Pod 模版</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">hello</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">busybox</span></span><br><span class="line">        <span class="attr">command:</span> [<span class="string">&#x27;sh&#x27;</span>, <span class="string">&#x27;-c&#x27;</span>, <span class="string">&#x27;echo &quot;Hello, Kubernetes!&quot; &amp;&amp; sleep 3600&#x27;</span>]</span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">OnFailure</span></span><br><span class="line">    <span class="comment"># 以上为 Pod 模版</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostaliases-pod.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">hostaliases-pod</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">restartPolicy:</span> <span class="string">Never</span></span><br><span class="line">  <span class="attr">hostAliases:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">ip:</span> <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line">    <span class="attr">hostnames:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;foo.local&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;bar.local&quot;</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">ip:</span> <span class="string">&quot;10.1.2.3&quot;</span></span><br><span class="line">    <span class="attr">hostnames:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;foo.remote&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;bar.remote&quot;</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">cat-hosts</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">busybox:1.28</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">cat</span></span><br><span class="line">    <span class="attr">args:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;/etc/hosts&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当我们创建hostaliases-pod之后，那么</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kubectl logs hostaliases-pod</span></span><br><span class="line"><span class="comment"># Kubernetes-managed hosts file.</span></span><br><span class="line">127.0.0.1	localhost</span><br><span class="line">::1	localhost ip6-localhost ip6-loopback</span><br><span class="line">fe00::0	ip6-localnet</span><br><span class="line">fe00::0	ip6-mcastprefix</span><br><span class="line">fe00::1	ip6-allnodes</span><br><span class="line">fe00::2	ip6-allrouters</span><br><span class="line">172.20.2.7	hostaliases-pod</span><br><span class="line"></span><br><span class="line"><span class="comment"># Entries added by HostAliases.</span></span><br><span class="line">127.0.0.1	foo.local	bar.local</span><br><span class="line">10.1.2.3	foo.remote	bar.remote</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/28/02ubuntu20-04installkubernetes/" rel="prev" title="在Ubuntu 20.04部署Kubernetes">
+                  <i class="fa fa-chevron-left"></i> 在Ubuntu 20.04部署Kubernetes
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/01/podlifecycleandrestart/" rel="next" title="podlifecycleandrestart">
+                  podlifecycleandrestart <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">大可</span>
+</div>
+  <div class="powered-by">由 <a href="https://blog.ainvestornotes.com/">不知名技术小哥</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -124,7 +124,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -171,6 +171,102 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.ainvestornotes.com/2022/04/08/kubernetesusenfs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="大可">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大可的一亩三分地">
+      <meta itemprop="description" content="">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 大可的一亩三分地">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/08/kubernetesusenfs/" class="post-title-link" itemprop="url">基于DigitalOcean搭建的Kubernetes使用nfs做后端共享存储</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-08 10:59:11 / 修改时间：19:14:59" itemprop="dateCreated datePublished" datetime="2022-04-08T10:59:11+08:00">2022-04-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在接下来的kubernetes的文章中，将会部署statefulset应用，所以这里基于DigitalOcean的块设备构建NFS做后端共享存储。</p>
+<h4 id="安装部署Helm以及NFS-server图表"><a href="#安装部署Helm以及NFS-server图表" class="headerlink" title="安装部署Helm以及NFS-server图表"></a>安装部署Helm以及NFS-server图表</h4><ol>
+<li>基于官方文档安装Helm</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -</span><br><span class="line">sudo apt-get install apt-transport-https --<span class="built_in">yes</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb https://baltocdn.com/helm/stable/debian/ all main&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/helm-stable-debian.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install helm</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>添加源</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm repo add stable https://charts.helm.sh/stable</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>搜索nfs包</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm search repo stable | grep nfs-server</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>安装nfs-server图表</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm install nfs-server stable/nfs-server-provisioner --<span class="built_in">set</span> persistence.enabled=<span class="literal">true</span>,persistence.storageClass=do-block-storage,persistence.size=20Gi</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/08/kubernetesusenfs/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://blog.ainvestornotes.com/2022/04/01/kubernetesstatefulset/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -189,7 +285,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/01/kubernetesstatefulset/" class="post-title-link" itemprop="url">kubernetesstatefulset</a>
+          <a href="/2022/04/01/kubernetesstatefulset/" class="post-title-link" itemprop="url">深入理解kubernetes之StatefulSet拓扑状态</a>
         </h2>
 
         <div class="post-meta-container">
@@ -199,9 +295,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-04-01 15:15:20 / 修改时间：23:15:20" itemprop="dateCreated datePublished" datetime="2022-04-01T15:15:20+08:00">2022-04-01</time>
+      <time title="创建时间：2022-04-01 15:15:20" itemprop="dateCreated datePublished" datetime="2022-04-01T15:15:20+08:00">2022-04-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 17:53:43" itemprop="dateModified" datetime="2022-04-08T17:53:43+08:00">2022-04-08</time>
     </span>
 
   
@@ -214,7 +316,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h4 id="StatefulSet基础"><a href="#StatefulSet基础" class="headerlink" title="StatefulSet基础"></a>StatefulSet基础</h4><p>在docker刚兴起的时候，大家很快发现其适合封装无状态应用（stateless application），尤其是web应用，但如果想去运行有状态应用，却发现困难直接上升。Kubernetes项目得益于控制器模式的设计思想，在deployment的基础上扩展除了对所有状态应用的初步支持，这个编排功能即<strong>StatefulSet</strong>。</p>
+<p>StatefulSet 用来管理某 Pod 集合的部署和扩缩， 并为这些 Pod 提供持久存储和持久标识符。</p>
+<p><strong>StatefulSet vs Deployment</strong></p>
+<p>和 Deployment 类似， StatefulSet 管理基于相同容器规约的一组 Pod。但和 Deployment 不同的是， StatefulSet 为它们的每个 Pod 维护了一个有粘性的 ID。这些 Pod 是基于相同的规约来创建的， 但是不能相互替换：无论怎么调度，每个 Pod 都有一个永久不变的 ID。</p>
+<p>如果希望使用存储卷为工作负载提供持久存储，可以使用 StatefulSet 作为解决方案的一部分。 尽管 StatefulSet 中的单个 Pod 仍可能出现故障， 但持久的 Pod 标识符使得将现有卷与替换已失败 Pod 的新 Pod 相匹配变得更加容易。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/01/kubernetesstatefulset/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -276,7 +390,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-02 08:34:56" itemprop="dateModified" datetime="2022-04-02T08:34:56+08:00">2022-04-02</time>
+      <time title="修改时间：2022-04-02 15:23:19" itemprop="dateModified" datetime="2022-04-02T15:23:19+08:00">2022-04-02</time>
     </span>
 
   
@@ -292,15 +406,6 @@
           <h4 id="Depoyment定义"><a href="#Depoyment定义" class="headerlink" title="Depoyment定义"></a>Depoyment定义</h4><p>一个 Deployment 为 Pods 和 ReplicaSets 提供声明式的更新能力。</p>
 <p>你负责描述 Deployment 中的 目标状态，而 Deployment 控制器（Controller） 以受控速率更改实际状态， 使其变为期望状态。你可以定义 Deployment 以创建新的 ReplicaSet，或删除现有 Deployment， 并通过新的 Deployment 收养其资源。</p>
 <h4 id="Kubernetes的通用编排模式–控制循环（Control-loop）"><a href="#Kubernetes的通用编排模式–控制循环（Control-loop）" class="headerlink" title="Kubernetes的通用编排模式–控制循环（Control loop）"></a>Kubernetes的通用编排模式–控制循环（Control loop）</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">  实际状态 := 获取急群众对象X的实际状态（Actual State）</span><br><span class="line">  期望状态 := 获取集群中对象X的期望状态（Desired State）</span><br><span class="line">  <span class="keyword">if</span> 实际状态 == 期望状态 &#123;</span><br><span class="line">    do nothing</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    执行编排动作，将实际状态调整为期望状态</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>简述Deployment控制器模型的实现：</p>
-<ol>
-<li>Deployment从etcd中获取了所有携带app:nginx标签的Pod，然后统计他们的数量，这就是实际状态;</li>
-<li>Deployment对象的Replicas字段的值就是期望状态。</li>
-<li>Deployment控制器比较两个状态，然后根据结果确定是创建Pod，还是删除已有的Pod.</li>
-</ol>
-<p><img src="/../images/deployment-controller.png">)</p>
-<h4 id="Deployment-与ReplicaSet-和Pod"><a href="#Deployment-与ReplicaSet-和Pod" class="headerlink" title="Deployment 与ReplicaSet 和Pod"></a>Deployment 与ReplicaSet 和Pod</h4><p><img src="/../images/deploymentreplicasetpod.png"></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/04/01/kubernetesdeployment/#more" rel="contents">

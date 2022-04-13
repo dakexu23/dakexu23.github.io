@@ -124,7 +124,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -133,7 +133,7 @@
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -162,6 +162,75 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.ainvestornotes.com/2022/04/11/kubernetesservices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="大可">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="大可的一亩三分地">
+      <meta itemprop="description" content="">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 大可的一亩三分地">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/11/kubernetesservices/" class="post-title-link" itemprop="url">kubernetesservices</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-11 12:31:37 / 修改时间：20:32:33" itemprop="dateCreated datePublished" datetime="2022-04-11T12:31:37+08:00">2022-04-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -339,14 +408,7 @@
           <h4 id="什么是Job"><a href="#什么是Job" class="headerlink" title="什么是Job"></a>什么是Job</h4><p>Jobs<br>Job 会创建一个或者多个 Pods，并将继续重试 Pods 的执行，直到指定数量的 Pods 成功终止。 随着 Pods 成功结束，Job 跟踪记录成功完成的 Pods 个数。 当数量达到指定的成功个数阈值时，任务（即 Job）结束。 删除 Job 的操作会清除所创建的全部 Pods。 挂起 Job 的操作会删除 Job 的所有活跃 Pod，直到 Job 被再次恢复执行。</p>
 <p>一种简单的使用场景下，你会创建一个 Job 对象以便以一种可靠的方式运行某 Pod 直到完成。 当第一个 Pod 失败或者被删除（比如因为节点硬件失效或者重启）时，Job 对象会启动一个新的 Pod。</p>
 <p>你也可以使用 Job 以并行的方式运行多个 Pod。</p>
-<h4 id="运行一个离线任务"><a href="#运行一个离线任务" class="headerlink" title="运行一个离线任务"></a>运行一个离线任务</h4><p>下面是一个 Job 配置示例。它负责计算 π 到小数点后 2000 位，并将结果打印出来。 此计算大约需要 10 秒钟完成。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># job.yaml</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Job</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pi</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">pi</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">perl</span></span><br><span class="line">        <span class="attr">command:</span> [<span class="string">&quot;perl&quot;</span>,  <span class="string">&quot;-Mbignum=bpi&quot;</span>, <span class="string">&quot;-wle&quot;</span>, <span class="string">&quot;print bpi(2000)&quot;</span>]</span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Never</span></span><br><span class="line">  <span class="attr">backoffLimit:</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">root@dakelab-ccu4f:~/deploy<span class="comment"># kubectl apply -f job.yaml</span></span><br><span class="line">job.batch/pi created</span><br><span class="line">root@dakelab-ccu4f:~/deploy<span class="comment"># kubectl describe jobs/pi</span></span><br><span class="line">Name:             pi</span><br><span class="line">Namespace:        default</span><br><span class="line">Selector:         controller-uid=577c0156-d104-4a91-8125-de0645eab53c</span><br><span class="line">Labels:           controller-uid=577c0156-d104-4a91-8125-de0645eab53c</span><br><span class="line">                  job-name=pi</span><br><span class="line">Annotations:      &lt;none&gt;</span><br><span class="line">Parallelism:      1</span><br><span class="line">Completions:      1</span><br><span class="line">Completion Mode:  NonIndexed</span><br><span class="line">Start Time:       Fri, 08 Apr 2022 12:55:19 +0000</span><br><span class="line">Completed At:     Fri, 08 Apr 2022 12:55:40 +0000</span><br><span class="line">Duration:         21s</span><br><span class="line">Pods Statuses:    0 Running / 1 Succeeded / 0 Failed</span><br><span class="line">Pod Template:</span><br><span class="line">  Labels:  controller-uid=577c0156-d104-4a91-8125-de0645eab53c</span><br><span class="line">           job-name=pi</span><br><span class="line">  Containers:</span><br><span class="line">   pi:</span><br><span class="line">    Image:      perl</span><br><span class="line">    Port:       &lt;none&gt;</span><br><span class="line">    Host Port:  &lt;none&gt;</span><br><span class="line">    Command:</span><br><span class="line">      perl</span><br><span class="line">      -Mbignum=bpi</span><br><span class="line">      -wle</span><br><span class="line">      <span class="built_in">print</span> bpi(2000)</span><br><span class="line">    Environment:  &lt;none&gt;</span><br><span class="line">    Mounts:       &lt;none&gt;</span><br><span class="line">  Volumes:        &lt;none&gt;</span><br><span class="line">Events:</span><br><span class="line">  Type    Reason            Age   From            Message</span><br><span class="line">  ----    ------            ----  ----            -------</span><br><span class="line">  Normal  SuccessfulCreate  60s   job-controller  Created pod: pi--1-mbbs8</span><br><span class="line">  Normal  Completed         39s   job-controller  Job completed</span><br><span class="line">root@dakelab-ccu4f:~/deploy<span class="comment"># kubectl logs jobs/pi</span></span><br><span class="line">3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632788659361533818279682303019520353018529689957736225994138912497217752834791315155748572424541506959508295331168617278558890750983817546374649393192550604009277016711390098488240128583616035637076601047101819429555961989467678374494482553797747268471040475346462080466842590694912933136770289891521047521620569660240580381501935112533824300355876402474964732639141992726042699227967823547816360093417216412199245863150302861829745557067498385054945885869269956909272107975093029553211653449872027559602364806654991198818347977535663698074265425278625518184175746728909777727938000816470600161452491921732172147723501414419735685481613611573525521334757418494684385233239073941433345477624168625189835694855620992192221842725502542568876717904946016534668049886272327917860857843838279679766814541009538837863609506800642251252051173929848960841284886269456042419652850222106611863067442786220391949450471237137869609563643719172874677646575739624138908658326459958133904780275901</span><br></pre></td></tr></table></figure>
-
-<h4 id="自动清理完成的-Job"><a href="#自动清理完成的-Job" class="headerlink" title="自动清理完成的 Job"></a>自动清理完成的 Job</h4><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># job-vith-ttl.yaml</span></span><br><span class="line"><span class="symbol">apiVersion:</span> batch/v1</span><br><span class="line"><span class="symbol">kind:</span> Job</span><br><span class="line"><span class="symbol">metadata:</span></span><br><span class="line"><span class="symbol">  name:</span> pi-with-ttl</span><br><span class="line"><span class="symbol">spec:</span></span><br><span class="line"><span class="symbol">  ttlSecondsAfterFinished:</span> <span class="number">100</span></span><br><span class="line"><span class="symbol">  template:</span></span><br><span class="line"><span class="symbol">    spec:</span></span><br><span class="line"><span class="symbol">      containers:</span></span><br><span class="line">      - name: pi</span><br><span class="line"><span class="symbol">        image:</span> perl</span><br><span class="line"><span class="symbol">        command:</span> [<span class="string">&quot;perl&quot;</span>,  <span class="string">&quot;-Mbignum=bpi&quot;</span>, <span class="string">&quot;-wle&quot;</span>, <span class="string">&quot;print bpi(2000)&quot;</span>]</span><br><span class="line"><span class="symbol">      restartPolicy:</span> Never</span><br></pre></td></tr></table></figure>
+<h4 id="运行一个离线任务"><a href="#运行一个离线任务" class="headerlink" title="运行一个离线任务"></a>运行一个离线任务</h4>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/04/08/kubernetesjobcronjob/#more" rel="contents">
@@ -431,19 +493,7 @@
 <li>在每个节点上运行监控守护进程</li>
 <li>一种简单的用法是为每种类型的守护进程在所有的节点上都启动一个 DaemonSet。 一个稍微复杂的用法是为同一种守护进程部署多个 DaemonSet；每个具有不同的标志， 并且对不同硬件类型具有不同的内存、CPU 要求。</li>
 </ul>
-<h4 id="编写-DaemonSet-Spec-和部署Daemonset"><a href="#编写-DaemonSet-Spec-和部署Daemonset" class="headerlink" title="编写 DaemonSet Spec 和部署Daemonset"></a>编写 DaemonSet Spec 和部署Daemonset</h4><ol>
-<li>编写一个daemonset文件</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">DaemonSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">fluentd-elasticsearch</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">k8s-app:</span> <span class="string">fluentd-logging</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">fluentd-elasticsearch</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">fluentd-elasticsearch</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">tolerations:</span></span><br><span class="line">      <span class="comment"># this toleration is to have the daemonset runnable on master nodes</span></span><br><span class="line">      <span class="comment"># remove it if your masters can&#x27;t run pods</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">node-role.kubernetes.io/master</span></span><br><span class="line">        <span class="attr">operator:</span> <span class="string">Exists</span></span><br><span class="line">        <span class="attr">effect:</span> <span class="string">NoSchedule</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">fluentd-elasticsearch</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">quay.io/fluentd_elasticsearch/fluentd:v2.5.2</span></span><br><span class="line">        <span class="attr">resources:</span></span><br><span class="line">          <span class="attr">limits:</span></span><br><span class="line">            <span class="attr">memory:</span> <span class="string">200Mi</span></span><br><span class="line">          <span class="attr">requests:</span></span><br><span class="line">            <span class="attr">cpu:</span> <span class="string">100m</span></span><br><span class="line">            <span class="attr">memory:</span> <span class="string">200Mi</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">varlog</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/var/log</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">varlibdockercontainers</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/var/lib/docker/containers</span></span><br><span class="line">          <span class="attr">readOnly:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">terminationGracePeriodSeconds:</span> <span class="number">30</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">varlog</span></span><br><span class="line">        <span class="attr">hostPath:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">/var/log</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">varlibdockercontainers</span></span><br><span class="line">        <span class="attr">hostPath:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">/var/lib/docker/containers</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>基于 YAML 文件创建 DaemonSet</li>
-</ol>
-<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl <span class="built_in">apply</span> -f daemonset.yaml</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>查看daemonset的部署情况</li>
-</ol>
+<h4 id="编写-DaemonSet-Spec-和部署Daemonset"><a href="#编写-DaemonSet-Spec-和部署Daemonset" class="headerlink" title="编写 DaemonSet Spec 和部署Daemonset"></a>编写 DaemonSet Spec 和部署Daemonset</h4>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/04/08/kubernetesdaemonset/#more" rel="contents">
@@ -529,17 +579,6 @@
 <ol start="2">
 <li>添加源</li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm repo add stable https://charts.helm.sh/stable</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>搜索nfs包</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm search repo stable | grep nfs-server</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>安装nfs-server图表</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm install nfs-server stable/nfs-server-provisioner --<span class="built_in">set</span> persistence.enabled=<span class="literal">true</span>,persistence.storageClass=do-block-storage,persistence.size=20Gi</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/04/08/kubernetesusenfs/#more" rel="contents">
@@ -818,13 +857,6 @@
 </tbody></table>
 <h4 id="Pod的重启策略"><a href="#Pod的重启策略" class="headerlink" title="Pod的重启策略"></a>Pod的重启策略</h4><p>Pode的重启策略（RestartPolicy）应用于Pod内的所有容器，并且仅在Pod所处的Node上由kubelet进行判断和重启操作。</p>
 <p>Pod的重启策略包括Always、OnFailure和Never,默认值为Always.</p>
-<ul>
-<li>Always: 当容器失效时，由kubelet自动重启容器</li>
-<li>OnFailure：当容器终止运行且退出码不为0时，由kubelet自动重启该容器</li>
-<li>Never: 无论容器运行状态如何,kubelet都不会重启该容器</li>
-</ul>
-<p>kubelet重启失效容器的失效时间间隔以sync-frequency乘以2n来计算，例如1、2、4、8倍等，并且在重启成功后的10min内重置该时间。</p>
-
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/04/01/podlifecycleandrestart/#more" rel="contents">
@@ -1023,103 +1055,9 @@
 <td>172.16.0.0&#x2F;24</td>
 </tr>
 </tbody></table>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">POD</span>网络IP：<span class="number">172.20.0.1</span>-<span class="number">172.20.255.254</span> 掩码：<span class="number">255.255.0.0</span></span><br><span class="line"><span class="attribute">Server</span>网络：<span class="number">172.21.0.1</span>-<span class="number">172.21.15.254</span> 掩码：<span class="number">255.255.240.0</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="三、基础环境配置"><a href="#三、基础环境配置" class="headerlink" title="三、基础环境配置"></a>三、基础环境配置</h4><ol>
-<li>配置节点hostname</li>
-</ol>
-<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">hostnamectl</span> <span class="built_in">set-hostname</span> <span class="string">&quot;k8s-master&quot;</span>  </span><br><span class="line"><span class="string">hostnamectl</span> <span class="built_in">set-hostname</span> <span class="string">&quot;k8s-node-1&quot;</span> </span><br><span class="line"><span class="string">hostnamectl</span> <span class="built_in">set-hostname</span> <span class="string">&quot;k8s-node-2&quot;</span> </span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>配置节点hosts</li>
-</ol>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/03/28/02ubuntu20-04installkubernetes/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.ainvestornotes.com/2022/03/27/01kubernetesarch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="大可">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="大可的一亩三分地">
-      <meta itemprop="description" content="">
-    </span>
-    
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 大可的一亩三分地">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/27/01kubernetesarch/" class="post-title-link" itemprop="url">Kubernetes原理及架构设计</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-28 05:01:56" itemprop="dateCreated datePublished" datetime="2022-03-28T05:01:56+08:00">2022-03-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-03-31 16:13:23" itemprop="dateModified" datetime="2022-03-31T16:13:23+08:00">2022-03-31</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="Kubernetes是什么"><a href="#Kubernetes是什么" class="headerlink" title="Kubernetes是什么"></a>Kubernetes是什么</h4><p>Kubernetes 是一个可移植的，可扩展的开源平台，用于管理容器化的工作负载和服务，方便了声明式配置和自动化。它拥有一个庞大且快速增长的生态系统。Kubernetes 的服务，支持和工具广泛可用。</p>
-<p>Kubernetes能做什么？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/27/01kubernetesarch/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
